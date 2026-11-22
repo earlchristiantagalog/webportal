@@ -1,0 +1,357 @@
+.page {
+  min-height: 100vh;
+  background: #f2f5f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.backgroundCircleOne,
+.backgroundCircleTwo {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.backgroundCircleOne {
+  width: 650px;
+  height: 650px;
+  left: -330px;
+  top: -390px;
+  border: 90px solid rgba(29, 95, 73, .035);
+}
+
+.backgroundCircleTwo {
+  width: 580px;
+  height: 580px;
+  right: -310px;
+  bottom: -360px;
+  border: 85px solid rgba(29, 95, 73, .035);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+}
+
+.portalHeading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #183c31;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1.8px;
+  margin-bottom: 12px;
+}
+
+.portalHeading strong {
+  font-weight: 800;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: #1b694c;
+  box-shadow: 0 5px 12px rgba(29, 95, 73, .15);
+}
+
+.logo svg {
+  width: 27px;
+  height: 27px;
+}
+
+.loginCard {
+  border: 1px solid #e6ece7;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(33, 59, 46, .07), 0 2px 8px rgba(33, 59, 46, .025);
+  background: white;
+}
+
+.cardTop {
+  padding: 24px 42px 20px;
+  border-bottom: 1px solid #eef1ed;
+  background: linear-gradient(135deg, #fff 55%, #f9fcf8 100%);
+}
+
+.accessBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #2c815d;
+  background: #edf7ee;
+  border: 1px solid #dcefe0;
+  border-radius: 100px;
+  padding: 7px 11px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.accessBadge span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #36aa72;
+}
+
+.cardTop h1 {
+  color: #1d3930;
+  font-size: 33px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -1.5px;
+  margin: 0 0 6px;
+}
+
+.cardTop h1 span {
+  color: #3ba46f;
+}
+
+.cardTop p {
+  color: #829087;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 340px;
+}
+
+.cardBody {
+  padding: 23px 42px 0;
+}
+
+.field {
+  margin-bottom: 19px;
+}
+
+.label {
+  display: block;
+  color: #2b4438;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.inputWrap {
+  position: relative;
+}
+
+.inputWrap>svg {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #9eada2;
+  pointer-events: none;
+}
+
+.input {
+  height: 52px;
+  border: 1px solid #dce5dd;
+  border-radius: 8px;
+  padding: 0 15px 0 44px;
+  color: #1d3930;
+  background: white;
+  font-size: 14px;
+}
+
+.input::placeholder {
+  color: #a7b2aa;
+}
+
+.input:focus {
+  border-color: #4eaa77;
+  box-shadow: 0 0 0 3px rgba(54, 170, 114, .13);
+}
+
+.passwordInput {
+  padding-right: 49px;
+}
+
+.visibilityButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #9eada2;
+  width: 28px;
+  height: 30px;
+  padding: 4px;
+  display: grid;
+  place-items: center;
+}
+
+.visibilityButton:hover {
+  color: #1d7950;
+}
+
+.visibilityButton svg {
+  width: 19px;
+  height: 19px;
+}
+
+.formOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 2px 0 23px;
+  color: #687d6f;
+  font-size: 13px;
+}
+
+.formOptions :global(.form-check) {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 20px;
+  padding-left: 0;
+  margin: 0;
+}
+
+.formOptions :global(.form-check-input) {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border-color: #c7d5c9;
+  box-shadow: none;
+  margin: 0;
+}
+
+.formOptions :global(.form-check-input:checked) {
+  background-color: #1b7952;
+  border-color: #1b7952;
+}
+
+.formOptions :global(.form-check-label) {
+  cursor: pointer;
+}
+
+.textButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #247e55;
+  font-weight: 700;
+  font-size: inherit;
+}
+
+.textButton:hover {
+  color: #155b3b;
+  text-decoration: underline;
+}
+
+.submitButton {
+  height: 52px;
+  border: 1px solid #1c714e;
+  border-radius: 8px;
+  background: #1c714e;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.submitButton:hover,
+.submitButton:focus-visible {
+  background: #145b3d;
+  border-color: #145b3d;
+  color: white;
+}
+
+.submitButton span {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.notice {
+  margin: 20px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.cardFooter {
+  border-top: 1px solid #edf1ec;
+  margin-top: 25px;
+  padding: 15px 0 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  color: #829087;
+  font-size: 12px;
+}
+.previewLink { text-align: center; color: #829087; font-size: 11px; margin: 0 0 17px; }
+.previewLink a { color: #247e55; font-weight: 700; text-decoration: none; }
+.previewLink a:hover { text-decoration: underline; }
+
+.helpIcon {
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid #9aaea0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bottomText {
+  text-align: center;
+  margin: 12px 0 0;
+  color: #9aa9a0;
+  font-size: 12px;
+}
+
+@media (max-width: 575.98px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .portalHeading {
+    margin-bottom: 20px;
+  }
+
+  .cardTop {
+    padding: 27px 26px 23px;
+  }
+
+  .cardTop h1 {
+    font-size: 30px;
+  }
+
+  .cardBody {
+    padding: 24px 26px 0;
+  }
+
+  .formOptions {
+    font-size: 12px;
+  }
+
+  .cardFooter {
+    font-size: 11px;
+  }
+}

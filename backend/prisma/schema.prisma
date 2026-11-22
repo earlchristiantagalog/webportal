@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Section {
+  id        String    @id @default(cuid())
+  grade     Int
+  name      String    @db.VarChar(60)
+  nameKey   String    @db.VarChar(60)
+  subjects  Subject[]
+  students  UserProfile[]
+  createdAt DateTime  @default(now())
+
+  @@unique([grade, nameKey])
+  @@index([grade, name])
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+}
+
+model UserProfile {
+  id        String    @id @default(cuid())
+  name      String    @db.VarChar(100)
+  email     String    @unique @db.VarChar(254)
+  role      UserRole
+  sectionId String?
+  section   Section?  @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([role, isActive])
+  @@index([sectionId])
+}
+
+model Subject {
+  id        String   @id @default(cuid())
+  sectionId String
+  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  name      String   @db.VarChar(80)
+  nameKey   String   @db.VarChar(80)
+  code      String   @unique @db.VarChar(5)
+  teacher   String?  @db.VarChar(80)
+  createdAt DateTime @default(now())
+
+  @@unique([sectionId, nameKey])
+  @@index([sectionId])
+}
