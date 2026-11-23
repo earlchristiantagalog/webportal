@@ -1,8 +1,8 @@
 import { adminApiGuard, databaseError, prismaErrorCode } from "@/backend/lib/admin-api";
 import { getPrisma } from "@/backend/lib/prisma";
 
-export async function DELETE(_request: Request, context: RouteContext<"/api/admin/subjects/[id]">) {
-  const blocked = adminApiGuard();
+export async function DELETE(request: Request, context: RouteContext<"/api/admin/subjects/[id]">) {
+  const blocked = await adminApiGuard(request);
   if (blocked) return blocked;
 
   const { id } = await context.params;

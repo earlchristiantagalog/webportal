@@ -4,7 +4,7 @@ import { getPrisma } from "@/backend/lib/prisma";
 
 export async function GET() {
   await connection();
-  const blocked = adminApiGuard();
+  const blocked = await adminApiGuard();
   if (blocked) return blocked;
 
   try {
@@ -26,7 +26,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const blocked = adminApiGuard();
+  const blocked = await adminApiGuard(request);
   if (blocked) return blocked;
 
   const body: unknown = await request.json().catch(() => null);

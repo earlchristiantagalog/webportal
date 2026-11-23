@@ -1,9 +1,13 @@
-export function adminApiGuard() {
+import { hasAdminSession, isAdminConfigured, sameOrigin } from "./admin-auth";
+
+export async function adminApiGuard(request?: Request) {
   if (process.env.NODE_ENV === "production") {
-    return Response.json(
-      { error: "Admin authentication is not configured. Database access is disabled in production." },
-      { status: 403 },
+    if (!isAdminConfigured()) return Response.json(
+      { error: "Admin authentication is not configured. Set the admin environment variables on Vercel." },
+      { status: 503 },
     );
+    if (!(await hasAdminSession())) return Response.json({ error: "Admin session required. Please sign in again." }, { status: 401 });
+    if (request && !sameOrigin(request)) return Response.json({ error: "Invalid request origin." }, { status: 403 });
   }
   if (!process.env.DATABASE_URL) {
     return Response.json(

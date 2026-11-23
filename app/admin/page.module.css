@@ -145,6 +145,8 @@
 
 .backLink {
   color: #526b58;
+  border: 0;
+  background: transparent;
 }
 
 .backLink:hover {

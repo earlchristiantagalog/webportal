@@ -22,6 +22,18 @@ The `/admin/users` page manages student and teacher profiles (name, email, optio
 
 The `/teacher` page is a Teachers Portal dashboard preview with illustrative classes, timetable, and announcements. It is linked from the sign-in page and does not use real student data or grant access to accounts.
 
+## Admin sign-in on Vercel
+
+The admin pages and API require a valid admin session in production. Configure these **server-side** environment variables in Vercel (Production):
+
+- `DATABASE_URL`: Neon pooled URL (and `DIRECT_URL` if deploying migrations from Vercel).
+- `ADMIN_EMAIL`: the email address for the single school administrator.
+- `ADMIN_PASSWORD_HASH` and `ADMIN_SESSION_SECRET`: generate both in a local interactive terminal with `node scripts/create-admin-credentials.mjs`. The password is entered without echoing and is **not** stored as plaintext.
+
+Redeploy after setting the variables. Open `/`, sign in with `ADMIN_EMAIL` and the password chosen above, then open `/admin/users`. Signing out clears the HTTP-only, Secure, SameSite=Strict cookie. Sessions expire after eight hours; changing the hash or secret invalidates them. Never put these values in `NEXT_PUBLIC_*`, source control, or a client-side file. Production access stays blocked if the configuration is missing. During local development the existing admin preview and API remain accessible without signing in.
+
+This single-admin setup does not include a persistent rate limiter. Enable a Vercel WAF rate-limit rule for `/api/admin/session` before opening the portal to untrusted traffic. For multiple staff accounts or self-service password reset, use a managed authentication provider instead.
+
 Prisma Client is generated automatically by `npm run build`; run `npm run db:generate` after editing `backend/prisma/schema.prisma` during development. The initial SQL migration is at `backend/prisma/migrations/20261122000000_init/migration.sql`.
 
 Backend implementation lives in `backend/`: Prisma configuration, schema, migration, database client, and route logic. The thin `app/api/admin/*/route.ts` files are required by Next.js to expose those handlers over HTTP.
@@ -40,6 +52,6 @@ The Subjects page uses asynchronous `fetch` requests (AJAX):
 
 Names are normalized and unique within each grade/section. Subject codes are unique across the database. Database errors and duplicate submissions return JSON errors and are shown as Bootstrap alerts.
 
-**Security:** Admin sign-in is still a UI preview. The admin API is available only in development; it returns 403 in production until real authentication and authorization are implemented. Do not expose these routes publicly by removing that guard without adding server-side access control.
+**Security:** The admin API checks the session for every request in production; admin page checks alone are not sufficient. Teacher profiles remain directory records, not teacher login accounts.
 
 Previous demo data in browser `localStorage` is not automatically imported into Neon. Nothing is deleted from the browser, but the Subjects page now displays database records only.

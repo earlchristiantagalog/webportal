@@ -7,7 +7,7 @@ const subjectCodePrefix = "26"; // First year of the 2026–2027 school year.
 
 export async function GET() {
   await connection();
-  const blocked = adminApiGuard();
+  const blocked = await adminApiGuard();
   if (blocked) return blocked;
 
   try {
@@ -22,7 +22,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const blocked = adminApiGuard();
+  const blocked = await adminApiGuard(request);
   if (blocked) return blocked;
 
   const body: unknown = await request.json().catch(() => null);

@@ -5,7 +5,7 @@ import { parseProfile, profileError } from "@/backend/lib/user-profile";
 
 export async function GET() {
   await connection();
-  const blocked = adminApiGuard();
+  const blocked = await adminApiGuard();
   if (blocked) return blocked;
   try {
     const users = await getPrisma().userProfile.findMany({
@@ -19,7 +19,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const blocked = adminApiGuard();
+  const blocked = await adminApiGuard(request);
   if (blocked) return blocked;
   const data = parseProfile(await request.json().catch(() => null));
   if (!data) return Response.json({ error: "Provide a valid name, email, role, and optional student section." }, { status: 400 });

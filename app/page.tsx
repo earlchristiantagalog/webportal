@@ -2,15 +2,38 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState<{ message: string; variant: "info" | "warning" } | null>(null);
+  const [signingIn, setSigningIn] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setNotice({ message: "Sign in is not connected yet. Your school administrator can connect this form to an authentication service.", variant: "info" });
+    if (signingIn) return;
+    const form = new FormData(event.currentTarget);
+    setSigningIn(true);
+    setNotice(null);
+    try {
+      const response = await fetch("/api/admin/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.get("email"), password: form.get("password") }),
+      });
+      if (!response.ok) {
+        const data: unknown = await response.json().catch(() => null);
+        throw new Error(data && typeof data === "object" && "error" in data && typeof data.error === "string"
+          ? data.error : "Sign in failed. Please try again.");
+      }
+      router.replace("/admin");
+      router.refresh();
+    } catch (error) {
+      setNotice({ message: error instanceof Error ? error.message : "Sign in failed. Please try again.", variant: "warning" });
+      setSigningIn(false);
+    }
   }
 
   return (
@@ -57,7 +80,7 @@ export default function Home() {
                 <button type="button" className={styles.textButton} onClick={() => setNotice({ message: "Password reset is not configured yet. Please contact your school's IT support team.", variant: "warning" })}>Forgot password?</button>
               </div>
 
-              <button type="submit" className={`btn w-100 ${styles.submitButton}`}>Sign in <span aria-hidden="true">→</span></button>
+              <button type="submit" className={`btn w-100 ${styles.submitButton}`} disabled={signingIn}>{signingIn ? "Signing in..." : "Sign in"} <span aria-hidden="true">→</span></button>
             </form>
 
             {notice && (

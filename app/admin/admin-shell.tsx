@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import styles from "./page.module.css";
+import LogoutButton from "./logout-button";
 
 function NavIcon({
   name,
@@ -104,12 +105,12 @@ export default function AdminShell({
             </span>
           </nav>
           <div className={styles.sidebarSpacer} />
-          <Link href="/" aria-label="Back to login" className={styles.backLink}>
+          <LogoutButton>
             <NavIcon name="logout" />
             <span className={styles.navTooltip} aria-hidden="true">
-              Back to login
+              Sign out
             </span>
-          </Link>
+          </LogoutButton>
         </div>
       </aside>
       <main

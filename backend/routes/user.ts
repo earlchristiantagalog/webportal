@@ -3,7 +3,7 @@ import { getPrisma } from "@/backend/lib/prisma";
 import { parseProfile, profileError } from "@/backend/lib/user-profile";
 
 export async function PATCH(request: Request, context: RouteContext<"/api/admin/users/[id]">) {
-  const blocked = adminApiGuard();
+  const blocked = await adminApiGuard(request);
   if (blocked) return blocked;
   const { id } = await context.params;
   if (!id || id.length > 100) return Response.json({ error: "Invalid profile ID." }, { status: 400 });
