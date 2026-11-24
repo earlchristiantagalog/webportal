@@ -16,7 +16,7 @@ Next.js, Bootstrap 5, Poppins, Prisma ORM, and Neon PostgreSQL.
    npm run dev
    ```
 
-4. Open `/admin/subjects`. Start by adding a section, then add a subject to it. The server generates a unique `26XXX` subject code on submission.
+4. Open `/admin/subjects`. Start by adding a section, then add a subject with one or more school weekdays (M, T, W, TH, F), start time, and end time. The server generates a unique `26XXX` subject code on submission. Existing subjects with one-time school-day dates are assigned their corresponding weekday; unscheduled subjects stay unscheduled. Historical dates and teacher values are retained in the database but no longer collected or shown.
 
 The `/admin/users` page manages student and teacher profiles (name, email, optional student section, active status). Profiles are not login accounts. Apply new migrations with `npm run db:deploy` when updating an existing database.
 
@@ -36,6 +36,8 @@ This single-admin setup does not include a persistent rate limiter. Enable a Ver
 
 Prisma Client is generated automatically by `npm run build`; run `npm run db:generate` after editing `backend/prisma/schema.prisma` during development. The initial SQL migration is at `backend/prisma/migrations/20261122000000_init/migration.sql`.
 
+After applying migrations and regenerating Prisma Client, restart the development server so it uses the new database fields.
+
 Backend implementation lives in `backend/`: Prisma configuration, schema, migration, database client, and route logic. The thin `app/api/admin/*/route.ts` files are required by Next.js to expose those handlers over HTTP.
 
 ## API
@@ -46,11 +48,12 @@ The Subjects page uses asynchronous `fetch` requests (AJAX):
 | --- | --- | --- |
 | `/api/admin/sections` | GET, POST | List and add sections |
 | `/api/admin/subjects` | GET, POST | List and add subjects |
-| `/api/admin/subjects/[id]` | DELETE | Remove a subject |
+| `/api/admin/subjects/[id]` | PATCH, DELETE | Edit a subject's name, section, and schedule; or remove it |
 | `/api/admin/users` | GET, POST | List and add student/teacher profiles |
 | `/api/admin/users/[id]` | PATCH | Edit or activate/deactivate a profile |
 
 Names are normalized and unique within each grade/section. Subject codes are unique across the database. Database errors and duplicate submissions return JSON errors and are shown as Bootstrap alerts.
+Subject POST/PATCH payloads use `days` as an array of one or more of `MON`, `TUE`, `WED`, `THU`, and `FRI`, with `startTime` and `endTime` in `HH:mm` format.
 
 **Security:** The admin API checks the session for every request in production; admin page checks alone are not sufficient. Teacher profiles remain directory records, not teacher login accounts.
 

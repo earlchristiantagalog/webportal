@@ -16,7 +16,7 @@
 
 .intro p {
   color: #526a58;
-  font-size: 12px;
+  font-size: 14px;
   margin: 0;
 }
 
@@ -26,7 +26,7 @@
   border: 1px solid #dce9de;
   padding: 8px 12px;
   border-radius: 30px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -54,27 +54,27 @@
 }
 
 .metricCard {
-  min-height: 120px;
-  padding: 20px 22px;
+  min-height: 132px;
+  padding: 22px 24px;
 }
 
 .metricCard span {
   color: #526a58;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
 }
 
 .metricCard strong {
   display: block;
   color: #203c2c;
-  font-size: 27px;
+  font-size: 30px;
   line-height: 1.25;
   margin-top: 5px;
 }
 
 .metricCard small {
   color: #526a58;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .cardHeading {
@@ -82,20 +82,20 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  padding: 22px 22px 19px;
+  padding: 24px 24px 21px;
   border-bottom: 1px solid #edf1ed;
 }
 
 .cardHeading h2 {
   color: #213c2d;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   margin: 0 0 5px;
 }
 
 .cardHeading p {
   color: #526a58;
-  font-size: 11px;
+  font-size: 13px;
   margin: 0;
 }
 
@@ -113,13 +113,14 @@
 .assignedBadge {
   padding: 8px 11px;
   white-space: nowrap;
+  font-size: 12px;
 }
 
 .sectionButton {
   display: flex;
   align-items: center;
   gap: 11px;
-  padding: 14px 17px;
+  padding: 16px 19px;
   border: 0;
   border-bottom: 1px solid #edf1ed;
   background: #fff;
@@ -136,7 +137,7 @@
   align-items: center;
   gap: 4px;
   padding: 6px 9px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -155,17 +156,17 @@
 
 .sectionForm :global(.form-label) {
   color: #284334;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   margin-bottom: 7px;
 }
 
 .sectionForm :global(.form-control),
 .sectionForm :global(.form-select) {
-  min-height: 40px;
+  min-height: 44px;
   border-color: #d8e3db;
   border-radius: 7px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .sectionForm :global(.form-control:focus),
@@ -182,7 +183,7 @@
 }
 
 .sectionFormActions :global(.btn) {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -194,7 +195,7 @@
 }
 
 .sectionNotice {
-  font-size: 10px;
+  font-size: 12px;
   margin: 12px 14px;
 }
 
@@ -219,15 +220,15 @@
 }
 
 .sectionAvatar {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   flex: none;
   display: grid;
   place-items: center;
   background: #eaf1f5;
   color: #365f78;
   border-radius: 9px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -245,25 +246,25 @@
 
 .sectionText strong {
   color: #253e2e;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .sectionText small {
   color: #526a58;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .sectionCount {
   margin-left: auto;
   color: #4d6756;
   background: #f1f5f1;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .sectionHint {
   color: #526a58;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
   padding: 17px 19px;
   border-top: 1px solid #edf1ed;
@@ -283,23 +284,23 @@
 }
 
 .formBody {
-  padding: 22px;
+  padding: 24px;
 }
 
 .formBody :global(.form-label) {
   color: #284334;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   margin-bottom: 7px;
 }
 
 .formBody :global(.form-control),
 .formBody :global(.form-select) {
-  min-height: 43px;
+  min-height: 46px;
   border-color: #d8e3db;
   border-radius: 7px;
   color: #263d2f;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .formBody :global(.form-control::placeholder) {
@@ -321,7 +322,7 @@
 .codeHelp {
   display: block;
   color: #526a58;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 5px;
 }
 
@@ -329,9 +330,67 @@
   color: #80551f;
 }
 
-.optional {
+.weekdayFieldset {
+  min-width: 0;
+  margin: 0;
+}
+
+.weekdayFieldset legend {
+  float: none;
+  width: auto;
+  margin-bottom: 7px;
+}
+
+.weekdayPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 46px;
+  align-items: center;
+}
+
+.weekdayOption {
+  position: relative;
+  cursor: pointer;
+}
+
+.weekdayOption input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: inherit;
+}
+
+.weekdayOption span {
+  display: grid;
+  place-items: center;
+  min-width: 41px;
+  height: 41px;
+  padding: 0 8px;
+  border: 1px solid #d8e3db;
+  border-radius: 8px;
+  background: #fff;
   color: #526a58;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.weekdayOption:has(input:checked) span {
+  background: #1d714b;
+  border-color: #1d714b;
+  color: #fff;
+}
+
+.weekdayOption:has(input:focus-visible) span {
+  outline: 3px solid rgba(29, 113, 75, .35);
+  outline-offset: 2px;
+}
+
+.weekdayFieldset:disabled .weekdayOption {
+  cursor: not-allowed;
+  opacity: .6;
 }
 
 .formActions {
@@ -344,7 +403,7 @@
 
 .formActions>span {
   color: #526a58;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .addButton {
@@ -358,7 +417,7 @@
   align-items: center;
   gap: 8px;
   padding: 9px 15px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -371,7 +430,7 @@
 
 .notice {
   margin: 18px 0 0;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .tableCard {
@@ -380,7 +439,7 @@
 }
 
 .subjectTable {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .subjectTable th {
@@ -388,7 +447,7 @@
   color: #526a58;
   border-bottom-color: #e9eee9;
   padding: 13px 20px;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   white-space: nowrap;
@@ -396,7 +455,7 @@
 
 .subjectTable td {
   color: #526a58;
-  padding: 12px 20px;
+  padding: 15px 20px;
   border-bottom-color: #edf1ed;
   white-space: nowrap;
 }
@@ -409,7 +468,7 @@
 
 .subjectTable td strong {
   color: #263d2f;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -428,7 +487,7 @@
 .codeBadge {
   color: #36784c;
   background: #eaf1f5;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   padding: 7px 9px;
 }
@@ -444,7 +503,90 @@
   --bs-btn-hover-bg: #f8efe3;
   --bs-btn-hover-border-color: #b90505;
   --bs-btn-hover-color: #b90505;
-  font-size: 10px;
+  font-size: 12px;
+}
+
+.rowActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editButton {
+  --bs-btn-color: #1d714b;
+  --bs-btn-border-color: #b8d8c3;
+  --bs-btn-hover-bg: #1d714b;
+  --bs-btn-hover-border-color: #1d714b;
+  font-size: 12px;
+}
+
+.editDialog {
+  width: min(600px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  color: #263d2f;
+  box-shadow: 0 22px 70px rgba(22, 44, 30, .24);
+}
+
+.editDialog::backdrop {
+  background: rgba(17, 35, 24, .55);
+}
+
+.editContent {
+  background: #fff;
+  border-radius: 12px;
+}
+
+.editContent :global(.modal-header),
+.editContent :global(.modal-body),
+.editContent :global(.modal-footer) {
+  padding: 20px 24px;
+}
+
+.editContent :global(.modal-title) {
+  color: #203c2c;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.editSubtitle {
+  margin: 5px 0 0;
+  color: #526a58;
+  font-size: 12px;
+}
+
+.editContent :global(.form-label) {
+  color: #284334;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.editContent :global(.form-control),
+.editContent :global(.form-select) {
+  min-height: 44px;
+  border-color: #d8e3db;
+  font-size: 14px;
+}
+
+.editContent :global(.form-control:focus),
+.editContent :global(.form-select:focus) {
+  border-color: #2c8157;
+  box-shadow: 0 0 0 3px rgba(29, 113, 75, .13);
+}
+
+.editContent :global(.form-control[readonly]) {
+  background: #f5f7f5;
+}
+
+.editContent :global(.alert) {
+  font-size: 13px;
+}
+
+.editContent :global(.modal-footer .btn) {
+  font-size: 13px;
 }
 
 .tableFooter {
@@ -452,7 +594,7 @@
   background: #fbfcfb;
   border-top: 1px solid #edf1ed;
   padding: 14px 20px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .emptyState {
@@ -477,12 +619,12 @@
 
 .emptyState strong {
   color: #263d2f;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .emptyState p {
   color: #526a58;
-  font-size: 11px;
+  font-size: 13px;
   margin: 6px 0 0;
 }
 
@@ -513,5 +655,15 @@
   .addButton {
     width: 100%;
     justify-content: center;
+  }
+
+  .editContent :global(.modal-header),
+  .editContent :global(.modal-body),
+  .editContent :global(.modal-footer) {
+    padding: 18px;
+  }
+
+  .editContent :global(.modal-footer .btn) {
+    width: auto;
   }
 }

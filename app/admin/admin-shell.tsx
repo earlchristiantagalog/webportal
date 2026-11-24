@@ -75,6 +75,10 @@ export default function AdminShell({
           <span className={styles.brandIcon}>
             <NavIcon name="book" />
           </span>
+          <span className={styles.brandText}>
+            MNHS <strong>PORTAL</strong>
+            <small>ADMIN WORKSPACE</small>
+          </span>
         </div>
         <div className={styles.sidebarContent}>
           <nav className={styles.nav} aria-label="Admin pages">

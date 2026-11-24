@@ -1,1 +1,1 @@
-export { DELETE } from "@/backend/routes/subject";
+export { PATCH, DELETE } from "@/backend/routes/subject";

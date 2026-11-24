@@ -41,14 +41,18 @@ model UserProfile {
 }
 
 model Subject {
-  id        String   @id @default(cuid())
-  sectionId String
-  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Restrict)
-  name      String   @db.VarChar(80)
-  nameKey   String   @db.VarChar(80)
-  code      String   @unique @db.VarChar(5)
-  teacher   String?  @db.VarChar(80)
-  createdAt DateTime @default(now())
+  id            String    @id @default(cuid())
+  sectionId     String
+  section       Section   @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  name          String    @db.VarChar(80)
+  nameKey       String    @db.VarChar(80)
+  code          String    @unique @db.VarChar(5)
+  teacher       String?   @db.VarChar(80)
+  scheduledDate DateTime? @db.Date
+  days          String[]  @default([])
+  startTime     String?   @db.VarChar(5)
+  endTime       String?   @db.VarChar(5)
+  createdAt     DateTime  @default(now())
 
   @@unique([sectionId, nameKey])
   @@index([sectionId])

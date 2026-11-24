@@ -2,6 +2,7 @@ import { randomInt } from "node:crypto";
 import { connection } from "next/server";
 import { adminApiGuard, databaseError, prismaErrorCode } from "@/backend/lib/admin-api";
 import { getPrisma } from "@/backend/lib/prisma";
+import { parseSubjectInput } from "@/backend/lib/subject-input";
 
 const subjectCodePrefix = "26"; // First year of the 2026–2027 school year.
 
@@ -13,9 +14,9 @@ export async function GET() {
   try {
     const subjects = await getPrisma().subject.findMany({
       orderBy: { createdAt: "asc" },
-      select: { id: true, sectionId: true, name: true, code: true, teacher: true },
+      select: { id: true, sectionId: true, name: true, code: true, days: true, startTime: true, endTime: true },
     });
-    return Response.json({ subjects: subjects.map((item) => ({ ...item, teacher: item.teacher ?? "" })) });
+    return Response.json({ subjects });
   } catch (error) {
     return databaseError(error);
   }
@@ -25,27 +26,14 @@ export async function POST(request: Request) {
   const blocked = await adminApiGuard(request);
   if (blocked) return blocked;
 
-  const body: unknown = await request.json().catch(() => null);
-  if (!body || typeof body !== "object" || !("sectionId" in body) || !("name" in body) || typeof body.sectionId !== "string" || typeof body.name !== "string") {
-    return Response.json({ error: "Section and subject name are required." }, { status: 400 });
-  }
-  const teacherInput = "teacher" in body ? body.teacher : "";
-  if (typeof teacherInput !== "string") {
-    return Response.json({ error: "Teacher must be text." }, { status: 400 });
-  }
-
-  const sectionId = body.sectionId.trim();
-  const name = body.name.normalize("NFKC").trim().replace(/\s+/g, " ");
-  const teacher = teacherInput.normalize("NFKC").trim().replace(/\s+/g, " ");
-  if (!sectionId || sectionId.length > 100 || !name || name.length > 80 || teacher.length > 80) {
-    return Response.json({ error: "Use a valid section, subject name (1–80 characters), and teacher (up to 80 characters)." }, { status: 400 });
-  }
+  const parsed = parseSubjectInput(await request.json().catch(() => null));
+  if (parsed.error) return parsed.error;
+  const { sectionId, name, nameKey, days, startTime, endTime } = parsed.data!;
 
   try {
     const prisma = getPrisma();
     const section = await prisma.section.findUnique({ where: { id: sectionId }, select: { id: true } });
     if (!section) return Response.json({ error: "The selected section no longer exists." }, { status: 404 });
-    const nameKey = name.toLowerCase();
     const existing = await prisma.subject.findUnique({
       where: { sectionId_nameKey: { sectionId, nameKey } },
       select: { id: true },
@@ -57,9 +45,9 @@ export async function POST(request: Request) {
       const code = `${subjectCodePrefix}${String((start + offset) % 1000).padStart(3, "0")}`;
       try {
         const subject = await prisma.subject.create({
-          data: { sectionId, name, nameKey, teacher: teacher || null, code },
+          data: { sectionId, name, nameKey, days, startTime, endTime, code },
         });
-        return Response.json({ subject: { id: subject.id, sectionId, name: subject.name, teacher: subject.teacher ?? "", code: subject.code } }, { status: 201 });
+        return Response.json({ subject: { id: subject.id, sectionId, name: subject.name, code: subject.code, days, startTime, endTime } }, { status: 201 });
       } catch (error) {
         if (prismaErrorCode(error) === "P2002") {
           const duplicateName = await prisma.subject.findUnique({

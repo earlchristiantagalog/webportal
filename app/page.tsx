@@ -2,11 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState<{ message: string; variant: "info" | "warning" } | null>(null);
   const [signingIn, setSigningIn] = useState(false);
@@ -28,8 +26,8 @@ export default function Home() {
         throw new Error(data && typeof data === "object" && "error" in data && typeof data.error === "string"
           ? data.error : "Sign in failed. Please try again.");
       }
-      router.replace("/admin");
-      router.refresh();
+      // A full navigation uses the newly issued HTTP-only session cookie.
+      window.location.replace("/admin");
     } catch (error) {
       setNotice({ message: error instanceof Error ? error.message : "Sign in failed. Please try again.", variant: "warning" });
       setSigningIn(false);

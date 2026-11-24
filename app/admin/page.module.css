@@ -744,19 +744,22 @@
   }
 
   .sidebar {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 30;
     width: 100%;
     min-height: 0;
     height: auto;
     border-right: 0;
     border-bottom: 1px solid #e9eee9;
+    box-shadow: 0 3px 12px rgba(27, 65, 39, .06);
   }
 
   .brand {
-    height: 62px;
+    height: 58px;
     justify-content: flex-start;
     gap: 10px;
-    padding: 0 18px;
+    padding: 0 16px;
   }
 
   .brandText {
@@ -787,7 +790,7 @@
   }
 
   .sidebarContent {
-    padding: 8px 12px 10px;
+    padding: 0 8px;
   }
 
   .sidebarSpacer {
@@ -796,11 +799,11 @@
 
   .backLink {
     position: absolute;
-    top: 7px;
-    right: 13px;
+    top: 5px;
+    right: 9px;
     width: auto;
     height: 48px;
-    padding: 0 9px;
+    padding: 0 8px;
     gap: 6px;
     font-size: 10px;
   }
@@ -820,18 +823,25 @@
   }
 
   .nav {
-    display: flex;
-    overflow-x: auto;
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px;
+    overflow: visible;
   }
 
   .navLink {
-    width: auto;
-    min-width: 52px;
-    height: 49px;
-    gap: 6px;
-    padding: 6px 10px;
+    width: 100%;
+    min-width: 0;
+    height: 57px;
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px 3px 5px;
     white-space: nowrap;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .navDisabled {
+    display: none;
   }
 
   .navTooltip,
@@ -849,13 +859,18 @@
     pointer-events: auto;
   }
 
+  .navLink .navTooltip {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .navTooltip::before {
     display: none;
   }
 
   .topbar {
-    min-height: 65px;
-    padding: 0 20px;
+    display: none;
   }
 
   .academicYear {

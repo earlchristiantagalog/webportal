@@ -62,8 +62,6 @@ export default function TeacherPortal() {
           <div className={styles.topRight}><span className={styles.schoolYear}>SY 2026–2027</span><span className={styles.profileAvatar}>TC</span><span className={styles.profileName}>Teacher <small>Preview account</small></span></div>
         </header>
         <div className={styles.content}>
-          <div className={styles.mobileBrand}><span className={styles.brandMark}><Icon name="book" /></span> MNHS Teacher Portal</div>
-          <div className={styles.mobileNav}><a href="#overview">Overview</a><a href="#classes">Classes</a><a href="#schedule">Schedule</a><a href="#announcements">Updates</a></div>
           <div className={styles.heading}>
             <div><span className={styles.eyebrow}><i /> TEACHER DASHBOARD</span><h1>Your teaching space</h1><p>An overview of your classes, schedule, and school updates.</p></div>
             <span className={styles.previewBadge}>Dashboard preview · Sample data</span>

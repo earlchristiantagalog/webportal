@@ -1,21 +1,11 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import SubjectEditModal from "./subject-edit-modal";
+import WeekdayPicker, { formatSchoolDays } from "./weekday-picker";
+import type { Section, Subject } from "./types";
 import styles from "./subjects.module.css";
 
-type Section = {
-  id: string;
-  grade: string;
-  name: string;
-  subjectCount: number;
-};
-type Subject = {
-  id: string;
-  sectionId: string;
-  name: string;
-  code: string;
-  teacher: string;
-};
 type Notice = { message: string; variant: "success" | "warning" };
 
 async function readResponse<T>(response: Response): Promise<T> {
@@ -57,8 +47,11 @@ export default function SubjectsManager() {
   const [sectionName, setSectionName] = useState("");
   const [sectionNotice, setSectionNotice] = useState<Notice | null>(null);
   const [name, setName] = useState("");
-  const [teacher, setTeacher] = useState("");
+  const [days, setDays] = useState<string[]>([]);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [notice, setNotice] = useState<Notice | null>(null);
+  const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -143,7 +136,21 @@ export default function SubjectsManager() {
     const sectionId = sections.some((item) => item.id === selectedSection)
       ? selectedSection
       : sections[0]?.id;
-    if (!subjectName || !sectionId || busy) return;
+    if (!subjectName || !sectionId || !startTime || !endTime || busy) return;
+    if (!days.length) {
+      setNotice({
+        message: "Choose at least one school weekday.",
+        variant: "warning",
+      });
+      return;
+    }
+    if (startTime >= endTime) {
+      setNotice({
+        message: "End time must be later than start time.",
+        variant: "warning",
+      });
+      return;
+    }
     setBusy(true);
     setNotice(null);
     try {
@@ -154,13 +161,17 @@ export default function SubjectsManager() {
           body: JSON.stringify({
             sectionId,
             name: subjectName,
-            teacher: teacher.trim(),
+            days,
+            startTime,
+            endTime,
           }),
         }),
       );
       setSubjects((current) => [...current, subject]);
       setName("");
-      setTeacher("");
+      setDays([]);
+      setStartTime("");
+      setEndTime("");
       setNotice({
         message: `${subject.name} was saved with code ${subject.code}.`,
         variant: "success",
@@ -204,6 +215,14 @@ export default function SubjectsManager() {
     }
   }
 
+  function handleSubjectSaved(updated: Subject) {
+    setSubjects((current) =>
+      current.map((subject) => (subject.id === updated.id ? updated : subject)),
+    );
+    setSelectedSection(updated.sectionId);
+    setNotice({ message: `${updated.name} was updated.`, variant: "success" });
+  }
+
   const activeSectionId = sections.some((item) => item.id === selectedSection)
     ? selectedSection
     : (sections[0]?.id ?? "");
@@ -233,7 +252,7 @@ export default function SubjectsManager() {
         <p className="mb-2 mt-1">{loadError}</p>
         <button
           type="button"
-          className="btn btn-sm btn-outline-dark"
+          className="btn btn-outline-dark"
           onClick={retryLoad}
         >
           Try again
@@ -284,7 +303,7 @@ export default function SubjectsManager() {
               </div>
               <button
                 type="button"
-                className={`btn btn-sm btn-outline-success ${styles.addSectionButton}`}
+                className={`btn btn-outline-success ${styles.addSectionButton}`}
                 aria-expanded={showSectionForm}
                 aria-controls="add-section-form"
                 disabled={busy}
@@ -334,7 +353,7 @@ export default function SubjectsManager() {
                 <div className={styles.sectionFormActions}>
                   <button
                     type="button"
-                    className="btn btn-sm btn-outline-secondary"
+                    className="btn btn-outline-secondary"
                     disabled={busy}
                     onClick={() => {
                       setShowSectionForm(false);
@@ -345,7 +364,7 @@ export default function SubjectsManager() {
                   </button>
                   <button
                     type="submit"
-                    className={`btn btn-sm btn-success ${styles.saveSectionButton}`}
+                    className={`btn btn-success ${styles.saveSectionButton}`}
                     disabled={busy}
                   >
                     {busy ? "Saving..." : "Save section"}
@@ -488,16 +507,38 @@ export default function SubjectsManager() {
                   </small>
                 </div>
                 <div className="col-md-6">
-                  <label htmlFor="teacher" className="form-label">
-                    Teacher <span className={styles.optional}>(optional)</span>
+                  <WeekdayPicker
+                    id="add-subject"
+                    days={days}
+                    onChange={setDays}
+                    disabled={!sections.length || busy}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="subject-start" className="form-label">
+                    Start time <span className={styles.required}>*</span>
                   </label>
                   <input
-                    id="teacher"
+                    id="subject-start"
+                    type="time"
                     className="form-control"
-                    value={teacher}
-                    onChange={(event) => setTeacher(event.target.value)}
-                    placeholder="e.g. Ms. A. Reyes"
-                    maxLength={80}
+                    value={startTime}
+                    onChange={(event) => setStartTime(event.target.value)}
+                    required
+                    disabled={!sections.length || busy}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="subject-end" className="form-label">
+                    End time <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    id="subject-end"
+                    type="time"
+                    className="form-control"
+                    value={endTime}
+                    onChange={(event) => setEndTime(event.target.value)}
+                    required
                     disabled={!sections.length || busy}
                   />
                 </div>
@@ -557,7 +598,8 @@ export default function SubjectsManager() {
                     <tr>
                       <th scope="col">SUBJECT</th>
                       <th scope="col">CODE</th>
-                      <th scope="col">TEACHER</th>
+                      <th scope="col">DAYS</th>
+                      <th scope="col">TIME</th>
                       <th scope="col">
                         <span className="visually-hidden">Actions</span>
                       </th>
@@ -575,22 +617,44 @@ export default function SubjectsManager() {
                           </span>
                         </td>
                         <td>
-                          {item.teacher || (
+                          {item.days.length ? (
+                            <span title={item.days.join(", ")}>
+                              {formatSchoolDays(item.days)}
+                            </span>
+                          ) : (
                             <span className={styles.unassigned}>
-                              Not assigned
+                              Not scheduled
                             </span>
                           )}
                         </td>
+                        <td>
+                          {item.startTime && item.endTime ? (
+                            `${item.startTime} – ${item.endTime}`
+                          ) : (
+                            <span className={styles.unassigned}>—</span>
+                          )}
+                        </td>
                         <td className="text-end">
-                          <button
-                            type="button"
-                            className={`btn btn-sm btn-outline-secondary ${styles.removeButton}`}
-                            aria-label={`Remove ${item.name} from ${section?.name}`}
-                            disabled={busy}
-                            onClick={() => handleRemove(item)}
-                          >
-                            Remove
-                          </button>
+                          <div className={styles.rowActions}>
+                            <button
+                              type="button"
+                              className={`btn btn-outline-success ${styles.editButton}`}
+                              aria-label={`Edit ${item.name} in ${section?.name}`}
+                              disabled={busy}
+                              onClick={() => setEditingSubject(item)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              className={`btn btn-outline-secondary ${styles.removeButton}`}
+                              aria-label={`Remove ${item.name} from ${section?.name}`}
+                              disabled={busy}
+                              onClick={() => handleRemove(item)}
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -611,6 +675,14 @@ export default function SubjectsManager() {
           </section>
         </div>
       </div>
+      {editingSubject && (
+        <SubjectEditModal
+          subject={editingSubject}
+          sections={sections}
+          onSaved={handleSubjectSaved}
+          onClose={() => setEditingSubject(null)}
+        />
+      )}
     </>
   );
 }
